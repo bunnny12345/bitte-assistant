@@ -147,12 +147,12 @@ for m in st.session_state.messages:
         if isinstance(m["content"],list):
             #Handle structured messages (user input)
             for part in m["content"]:
-                if part.get("type") == "message":
-                    for content_item in part.get("content",[]):
-                        if content_item.get("type") == "input_text":
-                            st.markdown(content_item["text"])
-                        elif content_item.get("type") == "input_image":
-                            st.image(content_item['image_url'],width=100)
+                for content_item in part.get("content",[]):
+                    ctype = content_item.get("type")
+                    if ctype == "input_text":
+                        st.markdown(content_item.get("text",""))
+                    elif ctype == "input_image":
+                        st.image(content_item.get("image_url"),width=100)
         else:
             #Handle simple text messages (assistant response)    
             st.markdown(m["content"])
